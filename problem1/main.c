@@ -143,14 +143,21 @@ int main(int argc, char** argv) {
     }
   }
 
-  int num_events = 2;
-  long long values[2];
-  int events[2] = {PAPI_L1_TCM, PAPI_L2_TCM};
+  int l1_tcm = PAPI_NULL, l2_tcm = PAPI_NULL;
+  long long cm1, cm2;
 
-  if (PAPI_start_counters(events, num_events) != PAPI_OK) {
-    printf("PAPI error: %d\n", 1);
+  if (PAPI_library_init(PAPI_VER_CURRENT) != PAPI_VER_CURRENT) {
+    printf("PAPI init Error\n");
     return 0;
   }
+  PAPI_create_eventset(&l1_tcm);
+  PAPI_create_eventset(&l2_tcm);
+
+  PAPI_add_event(l1_tcm, PAPI_L1_TCM);
+  PAPI_add_event(l2_tcm, PAPI_L2_TCM);
+
+  PAPI_start(l1_tcm);
+  PAPI_start(l2_tcm);
 
   switch (mode) {
     case 0:
@@ -173,12 +180,10 @@ int main(int argc, char** argv) {
       break;
   }
 
-  if (PAPI_stop_counters(values, num_events) != PAPI_OK) {
-    printf("PAPI_stop_counters error\n");
-    return 0;
-  };
+  PAPI_stop(l1_tcm, &cm1);
+  PAPI_stop(l2_tcm, &cm2);
 
-  printf("%lld %lld", values[0], values[1]);
+  printf("%lld %lld\n", cm1, cm2);
 
   print_matrix(c, n);
   print_matrix_in_file(c, n, file_c);
