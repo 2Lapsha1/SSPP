@@ -143,19 +143,39 @@ int main(int argc, char** argv) {
     }
   }
 
-  int num_events = 6;
-  long long values[6];
-  int events[2] = {PAPI_L1_STM, PAPI_L1_LDM, PAPI_L1_TCM,
-                   PAPI_L2_STM, PAPI_L2_LDM, PAPI_L2_TCM};
+  int l1_stm = PAPI_NULL, l1_ldm = PAPI_NULL, l1_tcm = PAPI_NULL;
+  int l2_stm = PAPI_NULL, l2_ldm = PAPI_NULL, l2_tcm = PAPI_NULL;
+  long long cm1_stm, cm1_ldm, cm1_tcm;
+  long long cm2_stm, cm2_ldm, cm2_tcm;
+
+  if (PAPI_library_init(PAPI_VER_CURRENT) != PAPI_VER_CURRENT) {
+    printf("PAPI init Error\n");
+    return 0;
+  }
+  PAPI_create_eventset(&l1_stm);
+  PAPI_create_eventset(&l1_ldm);
+  PAPI_create_eventset(&l1_tcm);
+  PAPI_create_eventset(&l2_stm);
+  PAPI_create_eventset(&l2_ldm);
+  PAPI_create_eventset(&l2_tcm);
+
+  PAPI_add_event(l1_stm, PAPI_L1_STM);
+  PAPI_add_event(l1_ldm, PAPI_L1_LDM);
+  PAPI_add_event(l1_tcm, PAPI_L1_TCM);
+  PAPI_add_event(l2_stm, PAPI_L2_STM);
+  PAPI_add_event(l2_ldm, PAPI_L2_LDM);
+  PAPI_add_event(l2_tcm, PAPI_L2_TCM);
+
+  PAPI_start(l1_stm);
+  PAPI_start(l1_ldm);
+  PAPI_start(l1_tcm);
+  PAPI_start(l2_stm);
+  PAPI_start(l2_ldm);
+  PAPI_start(l2_tcm);
 
   //    PAPI_L1_TCM - total cache misses
   //    PAPI_L1_LDM - load misses
   //    PAPI_L1_STM - store cache misses
-
-  if (PAPI_start_counters(events, num_events) != PAPI_OK) {
-    printf("PAPI error: %d\n", 1);
-    return 0;
-  }
 
   switch (mode) {
     case 0:
@@ -178,13 +198,15 @@ int main(int argc, char** argv) {
       break;
   }
 
-  if (PAPI_stop_counters(values, num_events) != PAPI_OK) {
-    printf("PAPI_stop_counters error\n");
-    return 0;
-  };
+  PAPI_stop(l1_stm, &cm1_stm);
+  PAPI_stop(l1_ldm, &cm1_ldm);
+  PAPI_stop(l1_tcm, &cm1_tcm);
+  PAPI_stop(l2_stm, &cm2_stm);
+  PAPI_stop(l2_ldm, &cm2_ldm);
+  PAPI_stop(l2_tcm, &cm2_tcm);
 
-  printf("%lld, %lld, %lld, %lld, %lld, %lld\n", values[0], values[1],
-         values[2], values[3], values[4], values[5]);
+  printf("%lld, %lld, %lld, %lld, %lld, %lld\n", cm1_stm, cm1_ldm, cm1_tcm,
+         cm2_stm, cm2_ldm, cm2_tcm);
 
   print_matrix(c, n);
   print_matrix_in_file(c, n, file_c);
