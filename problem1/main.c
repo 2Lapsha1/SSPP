@@ -1,4 +1,4 @@
-//#include <papi.h>
+#include <papi.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
   file_a = fopen(argv[1], "rb");
   file_b = fopen(argv[2], "rb");
   file_c = fopen(argv[3], "wb");
-  int mode = atoi(argv[3]);
+  int mode = atoi(argv[4]);
   if (mode < 0 || mode > 5) {
     printf("Incorrect mode input\n");
     return 0;
