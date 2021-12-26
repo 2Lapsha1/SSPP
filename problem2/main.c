@@ -1,19 +1,21 @@
 #include <papi.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-void print_matrix(int** c, int n) {
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
+// int32_t
+void print_matrix_int32(int32_t** c, int32_t n) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t j = 0; j < n; j++) {
       printf("%d ", c[i][j]);
     }
     printf("\n");
   }
 }
 
-void print_matrix_in_file(int** c, int n, FILE* file) {
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
+void print_matrix_in_file_int32(int32_t** c, int32_t n, FILE* file) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t j = 0; j < n; j++) {
       fprintf(file, "%d ", c[i][j]);
     }
     fprintf(file, "\n");
@@ -21,10 +23,10 @@ void print_matrix_in_file(int** c, int n, FILE* file) {
 }
 
 // ijk
-void mult_ijk(int** a, int** b, int** c, int n) {
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      for (int k = 0; k < n; k++) {
+void mult_ijk_int32(int32_t** a, int32_t** b, int32_t** c, int32_t n) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t j = 0; j < n; j++) {
+      for (int32_t k = 0; k < n; k++) {
         c[i][j] += a[i][k] * b[k][j];
       }
     }
@@ -32,10 +34,10 @@ void mult_ijk(int** a, int** b, int** c, int n) {
 }
 
 // jik
-void mult_jik(int** a, int** b, int** c, int n) {
-  for (int j = 0; j < n; j++) {
-    for (int i = 0; i < n; i++) {
-      for (int k = 0; k < n; k++) {
+void mult_jik_int32(int32_t** a, int32_t** b, int32_t** c, int32_t n) {
+  for (int32_t j = 0; j < n; j++) {
+    for (int32_t i = 0; i < n; i++) {
+      for (int32_t k = 0; k < n; k++) {
         c[i][j] += a[i][k] * b[k][j];
       }
     }
@@ -43,11 +45,11 @@ void mult_jik(int** a, int** b, int** c, int n) {
 }
 
 // ikj
-void mult_ikj(int** a, int** b, int** c, int n) {
-  for (int i = 0; i < n; i++) {
-    for (int k = 0; k < n; k++) {
-      int r = a[i][k];
-      for (int j = 0; j < n; j++) {
+void mult_ikj_int32(int32_t** a, int32_t** b, int32_t** c, int32_t n) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t k = 0; k < n; k++) {
+      int32_t r = a[i][k];
+      for (int32_t j = 0; j < n; j++) {
         c[i][j] += r * b[k][j];
       }
     }
@@ -55,11 +57,11 @@ void mult_ikj(int** a, int** b, int** c, int n) {
 }
 
 // jki
-void mult_jki(int** a, int** b, int** c, int n) {
-  for (int j = 0; j < n; j++) {
-    for (int k = 0; k < n; k++) {
-      int r = b[k][j];
-      for (int i = 0; i < n; i++) {
+void mult_jki_int32(int32_t** a, int32_t** b, int32_t** c, int32_t n) {
+  for (int32_t j = 0; j < n; j++) {
+    for (int32_t k = 0; k < n; k++) {
+      int32_t r = b[k][j];
+      for (int32_t i = 0; i < n; i++) {
         c[i][j] += a[i][k] * r;
       }
     }
@@ -67,11 +69,11 @@ void mult_jki(int** a, int** b, int** c, int n) {
 }
 
 // kij
-void mult_kij(int** a, int** b, int** c, int n) {
-  for (int k = 0; k < n; k++) {
-    for (int i = 0; i < n; i++) {
-      int r = a[i][k];
-      for (int j = 0; j < n; j++) {
+void mult_kij_int32(int32_t** a, int32_t** b, int32_t** c, int32_t n) {
+  for (int32_t k = 0; k < n; k++) {
+    for (int32_t i = 0; i < n; i++) {
+      int32_t r = a[i][k];
+      for (int32_t j = 0; j < n; j++) {
         c[i][j] += r * b[k][j];
       }
     }
@@ -79,11 +81,100 @@ void mult_kij(int** a, int** b, int** c, int n) {
 }
 
 // kji
-void mult_kji(int** a, int** b, int** c, int n) {
-  for (int k = 0; k < n; k++) {
-    for (int j = 0; j < n; j++) {
-      int r = b[k][j];
-      for (int i = 0; i < n; i++) {
+void mult_kji_int32(int32_t** a, int32_t** b, int32_t** c, int32_t n) {
+  for (int32_t k = 0; k < n; k++) {
+    for (int32_t j = 0; j < n; j++) {
+      int32_t r = b[k][j];
+      for (int32_t i = 0; i < n; i++) {
+        c[i][j] += a[i][k] * r;
+      }
+    }
+  }
+}
+
+// int64_t
+void print_matrix_int64(int64_t** c, int32_t n) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t j = 0; j < n; j++) {
+      printf("%d ", c[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+void print_matrix_in_file_int64(int64_t** c, int32_t n, FILE* file) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t j = 0; j < n; j++) {
+      fprintf(file, "%d ", c[i][j]);
+    }
+    fprintf(file, "\n");
+  }
+}
+
+// ijk
+void mult_ijk_int64(int64_t** a, int64_t** b, int64_t** c, int32_t n) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t j = 0; j < n; j++) {
+      for (int32_t k = 0; k < n; k++) {
+        c[i][j] += a[i][k] * b[k][j];
+      }
+    }
+  }
+}
+
+// jik
+void mult_jik_int64(int64_t** a, int64_t** b, int64_t** c, int32_t n) {
+  for (int32_t j = 0; j < n; j++) {
+    for (int32_t i = 0; i < n; i++) {
+      for (int32_t k = 0; k < n; k++) {
+        c[i][j] += a[i][k] * b[k][j];
+      }
+    }
+  }
+}
+
+// ikj
+void mult_ikj_int64(int64_t** a, int64_t** b, int64_t** c, int32_t n) {
+  for (int32_t i = 0; i < n; i++) {
+    for (int32_t k = 0; k < n; k++) {
+      int64_t r = a[i][k];
+      for (int32_t j = 0; j < n; j++) {
+        c[i][j] += r * b[k][j];
+      }
+    }
+  }
+}
+
+// jki
+void mult_jki_int64(int64_t** a, int64_t** b, int64_t** c, int32_t n) {
+  for (int32_t j = 0; j < n; j++) {
+    for (int32_t k = 0; k < n; k++) {
+      int64_t r = b[k][j];
+      for (int32_t i = 0; i < n; i++) {
+        c[i][j] += a[i][k] * r;
+      }
+    }
+  }
+}
+
+// kij
+void mult_kij_int64(int64_t** a, int64_t** b, int64_t** c, int32_t n) {
+  for (int32_t k = 0; k < n; k++) {
+    for (int32_t i = 0; i < n; i++) {
+      int64_t r = a[i][k];
+      for (int32_t j = 0; j < n; j++) {
+        c[i][j] += r * b[k][j];
+      }
+    }
+  }
+}
+
+// kji
+void mult_kji_int64(int64_t** a, int64_t** b, int64_t** c, int32_t n) {
+  for (int32_t k = 0; k < n; k++) {
+    for (int32_t j = 0; j < n; j++) {
+      int64_t r = b[k][j];
+      for (int32_t i = 0; i < n; i++) {
         c[i][j] += a[i][k] * r;
       }
     }
@@ -124,25 +215,12 @@ int main(int argc, char** argv) {
     return 0;
   }
 
-  int n = size_a;
-  int **a, **b, **c;
-  a = calloc(n, sizeof(*a));
-  b = calloc(n, sizeof(*b));
-  c = calloc(n, sizeof(*c));
-
-  for (int i = 0; i < n; i++) {
-    a[i] = calloc(n, sizeof(**a));
-    b[i] = calloc(n, sizeof(**b));
-    c[i] = calloc(n, sizeof(**c));
+  if (type_a != type_b) {
+    printf(
+        "Error: type of elements of matrix A isnt equal to the type of"
+        " elements of matrix B\b");
+    return 0;
   }
-
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      fscanf(file_a, "%d", &a[i][j]);
-      fscanf(file_b, "%d", &b[i][j]);
-    }
-  }
-
   int l1_stm = PAPI_NULL, l1_ldm = PAPI_NULL, l1_tcm = PAPI_NULL;
   int l2_stm = PAPI_NULL, l2_ldm = PAPI_NULL, l2_tcm = PAPI_NULL;
   long long cm1_stm, cm1_ldm, cm1_tcm;
@@ -177,27 +255,108 @@ int main(int argc, char** argv) {
   //    PAPI_L1_LDM - load misses
   //    PAPI_L1_STM - store cache misses
 
-  switch (mode) {
-    case 0:
-      mult_ijk(a, b, c, n);
-      break;
-    case 1:
-      mult_jik(a, b, c, n);
-      break;
-    case 2:
-      mult_ikj(a, b, c, n);
-      break;
-    case 3:
-      mult_jki(a, b, c, n);
-      break;
-    case 4:
-      mult_kij(a, b, c, n);
-      break;
-    case 5:
-      mult_kji(a, b, c, n);
-      break;
-  }
+  int32_t n = size_a;
+  if (type_a == 'd') {
+    int32_t **a, **b, **c;
+    a = calloc(n, sizeof(*a));
+    b = calloc(n, sizeof(*b));
+    c = calloc(n, sizeof(*c));
 
+    for (int32_t i = 0; i < n; i++) {
+      a[i] = calloc(n, sizeof(**a));
+      b[i] = calloc(n, sizeof(**b));
+      c[i] = calloc(n, sizeof(**c));
+    }
+
+    for (int32_t i = 0; i < n; i++) {
+      for (int32_t j = 0; j < n; j++) {
+        fscanf(file_a, "%d", &a[i][j]);
+        fscanf(file_b, "%d", &b[i][j]);
+      }
+    }
+
+    switch (mode) {
+      case 0:
+        mult_ijk_int32(a, b, c, n);
+        break;
+      case 1:
+        mult_jik_int32(a, b, c, n);
+        break;
+      case 2:
+        mult_ikj_int32(a, b, c, n);
+        break;
+      case 3:
+        mult_jki_int32(a, b, c, n);
+        break;
+      case 4:
+        mult_kij_int32(a, b, c, n);
+        break;
+      case 5:
+        mult_kji_int32(a, b, c, n);
+        break;
+    }
+    print_matrix_int32(c, n);
+    print_matrix_in_file_int32(c, n, file_c);
+
+    for (int i = 0; i < n; i++) {
+      free(a[i]);
+      free(b[i]);
+      free(c[i]);
+    }
+    free(a);
+    free(b);
+    free(c);
+  } else if (type_a == 'l') {
+    int64_t **a, **b, **c;
+    a = calloc(n, sizeof(*a));
+    b = calloc(n, sizeof(*b));
+    c = calloc(n, sizeof(*c));
+
+    for (int32_t i = 0; i < n; i++) {
+      a[i] = calloc(n, sizeof(**a));
+      b[i] = calloc(n, sizeof(**b));
+      c[i] = calloc(n, sizeof(**c));
+    }
+
+    for (int32_t i = 0; i < n; i++) {
+      for (int32_t j = 0; j < n; j++) {
+        fscanf(file_a, "%d", &a[i][j]);
+        fscanf(file_b, "%d", &b[i][j]);
+      }
+    }
+
+    switch (mode) {
+      case 0:
+        mult_ijk_int64(a, b, c, n);
+        break;
+      case 1:
+        mult_jik_int64(a, b, c, n);
+        break;
+      case 2:
+        mult_ikj_int64(a, b, c, n);
+        break;
+      case 3:
+        mult_jki_int64(a, b, c, n);
+        break;
+      case 4:
+        mult_kij_int64(a, b, c, n);
+        break;
+      case 5:
+        mult_kji_int64(a, b, c, n);
+        break;
+    }
+    print_matrix_int64(c, n);
+    print_matrix_in_file_int64(c, n, file_c);
+
+    for (int32_t i = 0; i < n; i++) {
+      free(a[i]);
+      free(b[i]);
+      free(c[i]);
+    }
+    free(a);
+    free(b);
+    free(c);
+  }
   PAPI_stop(l1_stm, &cm1_stm);
   PAPI_stop(l1_ldm, &cm1_ldm);
   PAPI_stop(l1_tcm, &cm1_tcm);
@@ -207,18 +366,7 @@ int main(int argc, char** argv) {
 
   printf("%lld, %lld, %lld, %lld, %lld, %lld\n", cm1_stm, cm1_ldm, cm1_tcm,
          cm2_stm, cm2_ldm, cm2_tcm);
-
-  print_matrix(c, n);
-  print_matrix_in_file(c, n, file_c);
-
-  for (int i = 0; i < n; i++) {
-    free(a[i]);
-    free(b[i]);
-    free(c[i]);
-  }
-  free(a);
-  free(b);
-  free(c);
+  
   fclose(file_a);
   fclose(file_b);
   fclose(file_c);
